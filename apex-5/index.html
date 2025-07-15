@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore Pro - Advanced E-Commerce Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --error: #ef4444;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --light: #f9fafb;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-bar {
+            position: relative;
+        }
+
+        .search-bar input {
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 25px;
+            width: 300px;
+            transition: var(--transition);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+        }
+
+        .cart-icon {
+            position: relative;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cart-icon:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--error);
+            color: var(--white);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            background: var(--white);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Product Grid */
+        .products-section {
+            padding: 4rem 0;
+            background: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--dark);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--primary);
+            background: var(--white);
+            color: var(--primary);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease-out forwards;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #f0f9ff, #e0f2fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .product-card:hover .product-image::before {
+            left: 100%;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: var(--warning);
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-to-cart:hover {
+            background: var(--primary-dark);
+        }
+
+        .add-to-cart::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .add-to-cart:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Cart Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-total {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: right;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: var(--success);
+            color: var(--white);
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .checkout-btn:hover {
+            background: #22c55e;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .search-bar input {
+                width: 200px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .filters {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-bar input {
+                width: 150px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Performance Optimization */
+        .product-card {
+            will-change: transform;
+        }
+
+        .add-to-cart {
+            will-change: background-color;
+        }
+
+        /* Dark Theme Support */
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --secondary: #a78bfa;
+            --accent: #f472b6;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --error: #f87171;
+            --dark: #f9fafb;
+            --gray: #d1d5db;
+            --light: #1f2937;
+            --white: #111827;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: var(--dark);
+        }
+
+        [data-theme="dark"] .hero {
+            background: linear-gradient(135deg, rgba(129, 140, 248, 0.9), rgba(167, 139, 250, 0.9));
+        }
+
+        /* Advanced Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px var(--primary); }
+            50% { box-shadow: 0 0 20px var(--primary), 0 0 30px var(--primary); }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Enhanced Product Cards */
+        .product-card {
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.8s;
+            z-index: 1;
+        }
+
+        .product-card:hover::before {
+            left: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .product-card:hover .product-image {
+            animation: float 2s ease-in-out infinite;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .product-card {
+                transform: none;
+            }
+            
+            .product-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .nav-actions {
+                gap: 0.5rem;
+            }
+            
+            .search-bar input {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 2rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .search-bar input {
+                width: 150px;
+            }
+            
+            .filters {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+            
+            .filter-btn {
+                flex-shrink: 0;
+            }
+        }
+
+        /* Enhanced Loading States */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        button:focus,
+        input:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --primary: #0066cc;
+                --dark: #000000;
+                --white: #ffffff;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .hero,
+            .nav-actions,
+            .filters,
+            .modal {
+                display: none !important;
+            }
+            
+            .product-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">TechStore Pro</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search products..." id="searchInput">
+                    <button class="search-btn" onclick="searchProducts()">🔍</button>
+                </div>
+                <button class="cart-icon" onclick="openCart()">
+                    🛒
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="container">
+                <h1>Welcome to TechStore Pro</h1>
+                <p>Discover the latest in technology with our premium collection</p>
+                <button class="cta-button" onclick="scrollToProducts()">Shop Now</button>
+            </div>
+        </section>
+
+        <section class="products-section" id="products">
+            <div class="container">
+                <h2 class="section-title">Featured Products</h2>
+                
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="electronics">Electronics</button>
+                    <button class="filter-btn" data-filter="computers">Computers</button>
+                    <button class="filter-btn" data-filter="mobile">Mobile</button>
+                    <button class="filter-btn" data-filter="accessories">Accessories</button>
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                </div>
+
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Shopping Cart</h3>
+                <button class="close-btn" onclick="closeCart()">&times;</button>
+            </div>
+            <div id="cartItems">
+                <!-- Cart items will be displayed here -->
+            </div>
+            <div class="cart-total" id="cartTotal">
+                Total: $0.00
+            </div>
+            <button class="checkout-btn" onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        let products = [];
+        let cart = [];
+        let filteredProducts = [];
+        let currentFilter = 'all';
+
+        // Product Data
+        const productData = [
+            {
+                id: 1,
+                name: "MacBook Pro M2",
+                price: 1299.99,
+                category: "computers",
+                rating: 4.8,
+                emoji: "💻",
+                description: "Powerful laptop with M2 chip"
+            },
+            {
+                id: 2,
+                name: "iPhone 14 Pro",
+                price: 999.99,
+                category: "mobile",
+                rating: 4.9,
+                emoji: "📱",
+                description: "Latest iPhone with Pro camera"
+            },
+            {
+                id: 3,
+                name: "Sony WH-1000XM4",
+                price: 349.99,
+                category: "accessories",
+                rating: 4.7,
+                emoji: "🎧",
+                description: "Noise-cancelling headphones"
+            },
+            {
+                id: 4,
+                name: "Samsung 4K TV",
+                price: 899.99,
+                category: "electronics",
+                rating: 4.6,
+                emoji: "📺",
+                description: "55-inch 4K Smart TV"
+            },
+            {
+                id: 5,
+                name: "iPad Air",
+                price: 599.99,
+                category: "mobile",
+                rating: 4.8,
+                emoji: "📱",
+                description: "Lightweight tablet for work and play"
+            },
+            {
+                id: 6,
+                name: "Gaming Keyboard",
+                price: 129.99,
+                category: "accessories",
+                rating: 4.5,
+                emoji: "⌨️",
+                description: "Mechanical RGB keyboard"
+            },
+            {
+                id: 7,
+                name: "Dell XPS 13",
+                price: 1199.99,
+                category: "computers",
+                rating: 4.7,
+                emoji: "💻",
+                description: "Ultra-thin laptop"
+            },
+            {
+                id: 8,
+                name: "AirPods Pro",
+                price: 249.99,
+                category: "accessories",
+                rating: 4.8,
+                emoji: "🎧",
+                description: "Wireless earbuds with ANC"
+            },
+            {
+                id: 9,
+                name: "Nintendo Switch",
+                price: 299.99,
+                category: "electronics",
+                rating: 4.9,
+                emoji: "🎮",
+                description: "Portable gaming console"
+            },
+            {
+                id: 10,
+                name: "Smart Watch",
+                price: 399.99,
+                category: "accessories",
+                rating: 4.6,
+                emoji: "⌚",
+                description: "Fitness and health tracker"
+            }
+        ];
+
+        // Initialize Application
+        function init() {
+            products = [...productData];
+            filteredProducts = [...products];
+            loadProducts();
+            setupEventListeners();
+            updateCartUI();
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    filterProducts(filter);
+                    
+                    // Update active button
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', debounce(searchProducts, 300));
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeCart();
+                }
+            });
+
+            // Modal click outside to close
+            document.getElementById('cartModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCart();
+                }
+            });
+        }
+
+        // Debounce function for search
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Load Products with animation
+        function loadProducts() {
+            const grid = document.getElementById('productsGrid');
+            const loading = document.getElementById('loading');
+            
+            // Show loading
+            loading.style.display = 'flex';
+            grid.innerHTML = '';
+
+            // Simulate loading delay
+            setTimeout(() => {
+                loading.style.display = 'none';
+                
+                filteredProducts.forEach((product, index) => {
+                    const productCard = createProductCard(product);
+                    productCard.style.animationDelay = `${index * 0.1}s`;
+                    grid.appendChild(productCard);
+                });
+            }, 500);
+        }
+
+        // Create Product Card
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <div class="product-image">
+                    ${product.emoji}
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">${product.name}</h3>
+                    <div class="product-price">$${product.price.toFixed(2)}</div>
+                    <div class="product-rating">
+                        <span class="stars">${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}</span>
+                        <span>(${product.rating})</span>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(${product.id})">
+                        Add to Cart
+                    </button>
+                </div>
+            `;
+            return card;
+        }
+
+        // Filter Products
+        function filterProducts(filter) {
+            currentFilter = filter;
+            
+            if (filter === 'all') {
+                filteredProducts = [...products];
+            } else {
+                filteredProducts = products.filter(product => product.category === filter);
+            }
+            
+            loadProducts();
+        }
+
+        // Search Products
+        function searchProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (searchTerm === '') {
+                filterProducts(currentFilter);
+                return;
+            }
+            
+            filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.description.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm)
+            );
+            
+            loadProducts();
+        }
+
+        // Add to Cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            updateCartUI();
+            showNotification('Product added to cart!', 'success');
+        }
+
+        // Remove from Cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+            updateCartModal();
+        }
+
+        // Update Cart UI
+        function updateCartUI() {
+            const cartCount = document.getElementById('cartCount');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+        }
+
+        // Open Cart Modal
+        function openCart() {
+            document.getElementById('cartModal').classList.add('active');
+            updateCartModal();
+        }
+
+        // Close Cart Modal
+        function closeCart() {
+            document.getElementById('cartModal').classList.remove('active');
+        }
+
+        // Update Cart Modal
+        function updateCartModal() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>Your cart is empty</p>';
+                cartTotal.textContent = 'Total: $0.00';
+                return;
+            }
+            
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div>
+                        <span>${item.emoji}</span>
+                        <strong>${item.name}</strong>
+                        <br>
+                        <small>Quantity: ${item.quantity}</small>
+                    </div>
+                    <div>
+                        <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                        <button onclick="removeFromCart(${item.id})" style="margin-left: 10px; color: red;">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotal.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        // Checkout
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification('Your cart is empty!', 'error');
+                return;
+            }
+            
+            // Simulate checkout process
+            showNotification('Processing checkout...', 'info');
+            
+            setTimeout(() => {
+                cart = [];
+                updateCartUI();
+                closeCart();
+                showNotification('Order placed successfully!', 'success');
+            }, 2000);
+        }
+
+        // Show Notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--error)' : 'var(--primary)'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                z-index: 1001;
+                animation: slideInRight 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Scroll to Products
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Performance Optimization: Lazy Loading
+        function observeProductCards() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.product-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Service Worker Registration (for PWA features)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Add CSS animation for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Advanced Features: Image Lazy Loading Simulation
+        function lazyLoadImages() {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.style.background = 'linear-gradient(45deg, #f0f9ff, #e0f2fe)';
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.product-image').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // Advanced Cart Analytics
+        class CartAnalytics {
+            constructor() {
+                this.events = [];
+            }
+
+            track(event, data) {
+                this.events.push({
+                    event,
+                    data,
+                    timestamp: Date.now()
+                });
+                console.log(`Analytics: ${event}`, data);
+            }
+
+            getCartValue() {
+                return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            }
+
+            getPopularProducts() {
+                const productFreq = {};
+                this.events.forEach(event => {
+                    if (event.event === 'add_to_cart') {
+                        const productId = event.data.productId;
+                        productFreq[productId] = (productFreq[productId] || 0) + 1;
+                    }
+                });
+                return productFreq;
+            }
+        }
+
+        const analytics = new CartAnalytics();
+
+        // Enhanced Add to Cart with Analytics
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            // Track analytics
+            analytics.track('add_to_cart', {
+                productId,
+                productName: product.name,
+                price: product.price,
+                cartValue: analytics.getCartValue()
+            });
+            
+            updateCartUI();
+            showNotification('Product added to cart!', 'success');
+            
+            // Haptic feedback for mobile
+            if ('vibrate' in navigator) {
+                navigator.vibrate(50);
+            }
+        }
+
+        // Advanced Search with Autocomplete
+        class SearchEngine {
+            constructor(products) {
+                this.products = products;
+                this.searchIndex = this.buildSearchIndex();
+            }
+
+            buildSearchIndex() {
+                const index = new Map();
+                this.products.forEach(product => {
+                    const terms = [
+                        product.name.toLowerCase(),
+                        product.description.toLowerCase(),
+                        product.category.toLowerCase()
+                    ].join(' ').split(' ');
+                    
+                    terms.forEach(term => {
+                        if (!index.has(term)) {
+                            index.set(term, new Set());
+                        }
+                        index.get(term).add(product.id);
+                    });
+                });
+                return index;
+            }
+
+            search(query) {
+                if (!query) return this.products;
+                
+                const terms = query.toLowerCase().split(' ');
+                const results = new Set();
+                
+                terms.forEach(term => {
+                    this.searchIndex.forEach((productIds, indexTerm) => {
+                        if (indexTerm.includes(term)) {
+                            productIds.forEach(id => results.add(id));
+                        }
+                    });
+                });
+                
+                return Array.from(results).map(id => 
+                    this.products.find(p => p.id === id)
+                ).filter(Boolean);
+            }
+
+            getSuggestions(query) {
+                const suggestions = new Set();
+                const lowercaseQuery = query.toLowerCase();
+                
+                this.searchIndex.forEach((productIds, term) => {
+                    if (term.startsWith(lowercaseQuery) && term !== lowercaseQuery) {
+                        suggestions.add(term);
+                    }
+                });
+                
+                return Array.from(suggestions).slice(0, 5);
+            }
+        }
+
+        const searchEngine = new SearchEngine(products);
+
+        // Enhanced Search with Suggestions
+        function setupAdvancedSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const suggestionsContainer = document.createElement('div');
+            suggestionsContainer.className = 'search-suggestions';
+            suggestionsContainer.style.cssText = `
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+                max-height: 200px;
+                overflow-y: auto;
+                z-index: 1000;
+                display: none;
+            `;
+            
+            document.querySelector('.search-bar').appendChild(suggestionsContainer);
+            
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.trim();
+                
+                if (query.length > 1) {
+                    const suggestions = searchEngine.getSuggestions(query);
+                    
+                    if (suggestions.length > 0) {
+                        suggestionsContainer.innerHTML = suggestions.map(suggestion => 
+                            `<div class="suggestion-item" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #f3f4f6;">${suggestion}</div>`
+                        ).join('');
+                        
+                        suggestionsContainer.style.display = 'block';
+                        
+                        // Add click listeners to suggestions
+                        suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
+                            item.addEventListener('click', function() {
+                                searchInput.value = this.textContent;
+                                suggestionsContainer.style.display = 'none';
+                                performAdvancedSearch();
+                            });
+                        });
+                    } else {
+                        suggestionsContainer.style.display = 'none';
+                    }
+                } else {
+                    suggestionsContainer.style.display = 'none';
+                }
+            });
+            
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-bar')) {
+                    suggestionsContainer.style.display = 'none';
+                }
+            });
+        }
+
+        function performAdvancedSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            filteredProducts = searchEngine.search(query);
+            loadProducts();
+        }
+
+        // Performance Monitoring
+        class PerformanceMonitor {
+            constructor() {
+                this.metrics = {};
+                this.startTime = performance.now();
+            }
+
+            startTimer(name) {
+                this.metrics[name] = { start: performance.now() };
+            }
+
+            endTimer(name) {
+                if (this.metrics[name]) {
+                    this.metrics[name].end = performance.now();
+                    this.metrics[name].duration = this.metrics[name].end - this.metrics[name].start;
+                    console.log(`${name}: ${this.metrics[name].duration.toFixed(2)}ms`);
+                }
+            }
+
+            getMetrics() {
+                return this.metrics;
+            }
+
+            measurePageLoad() {
+                window.addEventListener('load', () => {
+                    const loadTime = performance.now() - this.startTime;
+                    console.log(`Page load time: ${loadTime.toFixed(2)}ms`);
+                });
+            }
+        }
+
+        const perfMonitor = new PerformanceMonitor();
+
+        // Advanced Loading States
+        function showSkeletonLoader() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = Array(6).fill(0).map(() => `
+                <div class="product-card" style="animation: pulse 1.5s ease-in-out infinite alternate;">
+                    <div class="product-image" style="background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 2s infinite;"></div>
+                    <div class="product-info">
+                        <div style="height: 20px; background: #f0f0f0; border-radius: 4px; margin-bottom: 10px;"></div>
+                        <div style="height: 16px; background: #f0f0f0; border-radius: 4px; width: 60%; margin-bottom: 10px;"></div>
+                        <div style="height: 40px; background: #f0f0f0; border-radius: 8px;"></div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add shimmer animation
+            const shimmerStyle = document.createElement('style');
+            shimmerStyle.textContent = `
+                @keyframes shimmer {
+                    0% { background-position: -200% 0; }
+                    100% { background-position: 200% 0; }
+                }
+                @keyframes pulse {
+                    0% { opacity: 1; }
+                    100% { opacity: 0.4; }
+                }
+            `;
+            document.head.appendChild(shimmerStyle);
+        }
+
+        // Enhanced Product Loading
+        function loadProducts() {
+            const grid = document.getElementById('productsGrid');
+            
+            perfMonitor.startTimer('productLoad');
+            
+            // Show skeleton loader
+            showSkeletonLoader();
+            
+            // Simulate network delay
+            setTimeout(() => {
+                grid.innerHTML = '';
+                
+                filteredProducts.forEach((product, index) => {
+                    const productCard = createProductCard(product);
+                    productCard.style.animationDelay = `${index * 0.1}s`;
+                    grid.appendChild(productCard);
+                });
+                
+                perfMonitor.endTimer('productLoad');
+                lazyLoadImages();
+            }, 800);
+        }
+
+        // Advanced Error Handling
+        class ErrorHandler {
+            constructor() {
+                this.setupGlobalErrorHandling();
+            }
+
+            setupGlobalErrorHandling() {
+                window.addEventListener('error', (e) => {
+                    this.logError('JavaScript Error', e.error);
+                });
+
+                window.addEventListener('unhandledrejection', (e) => {
+                    this.logError('Unhandled Promise Rejection', e.reason);
+                });
+            }
+
+            logError(type, error) {
+                console.error(`${type}:`, error);
+                // In production, you would send this to a logging service
+                this.showErrorNotification('Something went wrong. Please try again.');
+            }
+
+            showErrorNotification(message) {
+                showNotification(message, 'error');
+            }
+        }
+
+        const errorHandler = new ErrorHandler();
+
+        // Enhanced Initialization
+        function init() {
+            try {
+                perfMonitor.measurePageLoad();
+                products = [...productData];
+                filteredProducts = [...products];
+                
+                setupEventListeners();
+                setupAdvancedSearch();
+                loadProducts();
+                updateCartUI();
+                
+                // Initialize PWA features
+                initializePWA();
+                
+                console.log('Application initialized successfully');
+            } catch (error) {
+                errorHandler.logError('Initialization Error', error);
+            }
+        }
+
+        // PWA Features
+        function initializePWA() {
+            // Add to home screen prompt
+            let deferredPrompt;
+            
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                
+                const installButton = document.createElement('button');
+                installButton.textContent = 'Install App';
+                installButton.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 20px;
+                    background: var(--primary);
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    z-index: 1000;
+                `;
+                
+                installButton.addEventListener('click', () => {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the install prompt');
+                        }
+                        deferredPrompt = null;
+                        installButton.remove();
+                    });
+                });
+                
+                document.body.appendChild(installButton);
+            });
+        }
+
+        // Theme Toggle Feature
+        function initializeThemeToggle() {
+            const themeToggle = document.createElement('button');
+            themeToggle.innerHTML = '🌙';
+            themeToggle.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary);
+                color: white;
+                border: none;
+                padding: 10px;
+                border-radius: 50%;
+                cursor: pointer;
+                z-index: 1000;
+                font-size: 1.2rem;
+            `;
+            
+            themeToggle.addEventListener('click', toggleTheme);
+            document.body.appendChild(themeToggle);
+        }
+
+        function toggleTheme() {
+            const root = document.documentElement;
+            const currentTheme = root.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                root.removeAttribute('data-theme');
+                document.querySelector('[data-theme-toggle]').innerHTML = '🌙';
+            } else {
+                root.setAttribute('data-theme', 'dark');
+                document.querySelector('[data-theme-toggle]').innerHTML = '☀️';
+            }
+        }
+
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
